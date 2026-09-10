@@ -1,0 +1,12 @@
+backend/.env
+backend/vendor/
+backend/storage/*.key
+frontend/node_modules/
+frontend/dist/
+.runtime/
+.env
+backend/storage/logs/
+backend/storage/app/
+backend/storage/framework/
+backend/bootstrap/cache/*.php
+frontend/.angular/
