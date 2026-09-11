@@ -21,5 +21,7 @@ maintenance history through real endpoints.
 Reference-data UI slice complete: settings page now creates units with API
 symbols and exposes the backend's category, location and supplier fields; focused
 frontend test covers unit payload shape.
-Next: asset operation backend coverage, reports, complete UI,
+Reports UI slice complete: page previews all generic report types, keeps filters
+on PDF/CSV exports and has a focused frontend test for export paths.
+Next: asset operation backend coverage, remaining form validation alignment,
 authentication/security hardening, milestone verification, following PLAN.md.

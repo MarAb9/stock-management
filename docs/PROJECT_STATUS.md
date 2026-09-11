@@ -13,6 +13,7 @@ Broaden backend coverage for asset operations and maintenance rules.
 - Inventory sessions snapshot stock by location/lot, require variance reasons, reject stale or repeated validation, create linked adjustment movements, and the Angular inventory page loads/counts lines through the real API.
 - Equipment page can create assets, run assignment/transfer/return operations, add maintenance, update maintenance status, and view operation/maintenance history through real API endpoints.
 - Reference-data page creates categories, units, locations, and suppliers with the backend's real fields, including unit symbols and supplier contact details.
+- Reports page previews stock, asset, movement, lot, inventory, and consumption reports through the generic report API and exports filtered PDF/CSV files.
 - PDF/CSV reporting endpoints and document templates exist.
 
 # In progress
@@ -22,7 +23,7 @@ Broaden backend coverage for asset operations and maintenance rules.
 # Next
 
 - Broaden backend coverage for asset operations and maintenance rules.
-- Improve reporting UI/actions after core data-entry workflows.
+- Tighten remaining frontend data-entry forms around backend validation rules.
 
 # Known issues
 
