@@ -10,7 +10,10 @@ multi-lot FEFO, audit and rollback behavior covered. Docker backend image now
 installs PostgreSQL, SQLite and bcmath extensions and builds cleanly. Auth test
 now covers session/Sanctum login instead of obsolete token login.
 Backend suite: 12 tests, 148 assertions. Frontend production build passed
-(existing Sass deprecation warning). Frontend starter test still has an obsolete
-assertion. Inventory screen/API mismatch confirmed.
-Next: inventory correctness, equipment, reference data/reports, complete UI,
+(existing Sass deprecation warning).
+Inventory slice complete: backend tests cover location/lot snapshots, variance
+reasons, stale/repeat validation rejection and linked adjustments; Angular
+inventory page now loads lines through the real API and exposes reason/comment
+fields. Frontend test drift fixed.
+Next: equipment operations/maintenance UI, reference data/reports, complete UI,
 authentication/security hardening, milestone verification, following PLAN.md.

@@ -1,6 +1,6 @@
 # Current milestone
 
-Move from hardened stock basics into inventory correctness.
+Complete equipment operations and maintenance history in the UI.
 
 # Completed
 
@@ -10,27 +10,28 @@ Move from hardened stock basics into inventory correctness.
 - Backend protects negative stock exits and transfers, validates decimal quantities, enforces lot ownership/expiration, allocates lot-tracked exits by FEFO, and rolls back failed multi-lot operations.
 - Auth tests cover the current session/Sanctum login behavior.
 - Docker backend image builds with PostgreSQL, SQLite, and bcmath support.
+- Inventory sessions snapshot stock by location/lot, require variance reasons, reject stale or repeated validation, create linked adjustment movements, and the Angular inventory page loads/counts lines through the real API.
 - PDF/CSV reporting endpoints and document templates exist.
 
 # In progress
 
-- Inventory session correctness and UI/API alignment.
+- Equipment operations and maintenance UI alignment.
 
 # Next
 
-- Validate inventory sessions by location and lot, including repeat-validation protection and adjustment links.
 - Complete equipment operations and maintenance history in the UI.
-- Fix frontend starter test drift.
+- Improve reference-data/forms coverage after equipment workflows.
 
 # Known issues
 
-- Frontend starter test has an obsolete assertion.
-- Inventory screen and API are not fully aligned for variance reasons and lot/location details.
+- Equipment operation and maintenance screens are still thin compared with backend capabilities.
 
 # Verification
 
 - Backend targeted tests: `docker compose exec -T backend php artisan test --filter=StockServiceTest`
+- Inventory targeted tests: `docker compose exec -T backend php artisan test --filter=InventoryServiceTest`
 - Backend suite: `docker compose exec -T backend php artisan test`
 - Backend style: `cd backend; vendor/bin/pint --dirty --format agent`
+- Frontend tests: `cd frontend; npm test -- --watch=false`
 - Frontend build: `cd frontend; npm run build`
 - Runtime: `docker compose up --build -d`
