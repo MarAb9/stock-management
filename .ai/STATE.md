@@ -18,5 +18,8 @@ fields. Frontend test drift fixed.
 Equipment UI slice complete: page can create assets, run assignment/transfer/
 return operations, add maintenance, update maintenance status and list operation/
 maintenance history through real endpoints.
-Next: reference data/forms, asset operation backend coverage, reports, complete
-UI, authentication/security hardening, milestone verification, following PLAN.md.
+Reference-data UI slice complete: settings page now creates units with API
+symbols and exposes the backend's category, location and supplier fields; focused
+frontend test covers unit payload shape.
+Next: asset operation backend coverage, reports, complete UI,
+authentication/security hardening, milestone verification, following PLAN.md.

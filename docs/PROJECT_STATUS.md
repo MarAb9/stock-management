@@ -1,6 +1,6 @@
 # Current milestone
 
-Improve reference-data/forms coverage after core stock, inventory, and equipment flows.
+Broaden backend coverage for asset operations and maintenance rules.
 
 # Completed
 
@@ -12,16 +12,17 @@ Improve reference-data/forms coverage after core stock, inventory, and equipment
 - Docker backend image builds with PostgreSQL, SQLite, and bcmath support.
 - Inventory sessions snapshot stock by location/lot, require variance reasons, reject stale or repeated validation, create linked adjustment movements, and the Angular inventory page loads/counts lines through the real API.
 - Equipment page can create assets, run assignment/transfer/return operations, add maintenance, update maintenance status, and view operation/maintenance history through real API endpoints.
+- Reference-data page creates categories, units, locations, and suppliers with the backend's real fields, including unit symbols and supplier contact details.
 - PDF/CSV reporting endpoints and document templates exist.
 
 # In progress
 
-- Reference-data and form completeness review.
+- Asset operation and maintenance backend coverage review.
 
 # Next
 
-- Improve reference-data/forms coverage after equipment workflows.
 - Broaden backend coverage for asset operations and maintenance rules.
+- Improve reporting UI/actions after core data-entry workflows.
 
 # Known issues
 
