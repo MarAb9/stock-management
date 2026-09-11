@@ -11,9 +11,16 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_returns_a_sanctum_token(): void
+    public function test_login_starts_an_authenticated_session(): void
     {
-        User::factory()->create(['email' => 'admin@example.test', 'password' => Hash::make('secret-password')]);
-        $this->postJson('/api/auth/login', ['email' => 'admin@example.test', 'password' => 'secret-password'])->assertOk()->assertJsonStructure(['token', 'user' => ['id', 'email']]);
+        $user = User::factory()->create(['email' => 'admin@example.test', 'password' => Hash::make('secret-password')]);
+
+        $this->withSession(['_token' => 'test-token'])
+            ->postJson('/api/auth/login', ['email' => 'admin@example.test', 'password' => 'secret-password'], ['X-CSRF-TOKEN' => 'test-token'])
+            ->assertOk()
+            ->assertJsonPath('user.email', $user->email)
+            ->assertJsonMissingPath('token');
+
+        $this->assertAuthenticatedAs($user);
     }
 }

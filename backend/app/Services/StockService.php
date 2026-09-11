@@ -3,8 +3,13 @@
 namespace App\Services;
 
 use App\Http\Requests\StoreMovementRequest;
-use App\Models\{Product, StockBalance, StockLot, StockMovement, User};
-use Illuminate\Support\Facades\{DB, Validator};
+use App\Models\Product;
+use App\Models\StockBalance;
+use App\Models\StockLot;
+use App\Models\StockMovement;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -12,7 +17,8 @@ class StockService
 {
     public function record(array $data, User $user): StockMovement
     {
-        $data = Validator::make($data, (new StoreMovementRequest)->rules())->validate();
+        $data = Validator::make($data, (new StoreMovementRequest($data))->rules())->validate();
+
         return DB::transaction(function () use ($data, $user): StockMovement {
             $product = Product::query()->lockForUpdate()->findOrFail($data['product_id']);
             if (! $product->active) {
@@ -69,7 +75,9 @@ class StockService
                     $take = bccomp($balance->quantity, $remaining, 3) < 0 ? $balance->quantity : $remaining;
                     $allocations[] = [$balance->stock_lot_id, $take];
                     $remaining = bcsub($remaining, $take, 3);
-                    if (bccomp($remaining, '0', 3) === 0) { break; }
+                    if (bccomp($remaining, '0', 3) === 0) {
+                        break;
+                    }
                 }
                 if (bccomp($remaining, '0', 3) > 0) {
                     throw ValidationException::withMessages(['quantity' => 'Stock insuffisant dans les lots admissibles pour effectuer cette sortie.']);
@@ -80,8 +88,12 @@ class StockService
             $operation = (string) Str::ulid();
             $first = null;
             foreach ($allocations as [$lotId, $amount]) {
-                if ($source) { $this->change($product->id, $source, $lotId, bcsub('0', $amount, 3)); }
-                if ($destination) { $this->change($product->id, $destination, $lotId, $amount); }
+                if ($source) {
+                    $this->change($product->id, $source, $lotId, bcsub('0', $amount, 3));
+                }
+                if ($destination) {
+                    $this->change($product->id, $destination, $lotId, $amount);
+                }
                 $movement = StockMovement::create([
                     'reference' => 'MVT-'.Str::ulid(), 'operation_reference' => $operation,
                     'product_id' => $product->id, 'stock_lot_id' => $lotId, 'type' => $type,
@@ -93,6 +105,7 @@ class StockService
                 app(AuditService::class)->log(request(), 'stock.'.$type, $movement, user: $user);
                 $first ??= $movement;
             }
+
             return $first;
         }, 3);
     }
