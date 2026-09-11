@@ -1,6 +1,6 @@
 # Current milestone
 
-Complete equipment operations and maintenance history in the UI.
+Improve reference-data/forms coverage after core stock, inventory, and equipment flows.
 
 # Completed
 
@@ -11,20 +11,21 @@ Complete equipment operations and maintenance history in the UI.
 - Auth tests cover the current session/Sanctum login behavior.
 - Docker backend image builds with PostgreSQL, SQLite, and bcmath support.
 - Inventory sessions snapshot stock by location/lot, require variance reasons, reject stale or repeated validation, create linked adjustment movements, and the Angular inventory page loads/counts lines through the real API.
+- Equipment page can create assets, run assignment/transfer/return operations, add maintenance, update maintenance status, and view operation/maintenance history through real API endpoints.
 - PDF/CSV reporting endpoints and document templates exist.
 
 # In progress
 
-- Equipment operations and maintenance UI alignment.
+- Reference-data and form completeness review.
 
 # Next
 
-- Complete equipment operations and maintenance history in the UI.
 - Improve reference-data/forms coverage after equipment workflows.
+- Broaden backend coverage for asset operations and maintenance rules.
 
 # Known issues
 
-- Equipment operation and maintenance screens are still thin compared with backend capabilities.
+- No blocking known issues in completed stock, inventory, or equipment UI slices.
 
 # Verification
 

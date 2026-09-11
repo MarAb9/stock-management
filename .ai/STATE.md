@@ -15,5 +15,8 @@ Inventory slice complete: backend tests cover location/lot snapshots, variance
 reasons, stale/repeat validation rejection and linked adjustments; Angular
 inventory page now loads lines through the real API and exposes reason/comment
 fields. Frontend test drift fixed.
-Next: equipment operations/maintenance UI, reference data/reports, complete UI,
-authentication/security hardening, milestone verification, following PLAN.md.
+Equipment UI slice complete: page can create assets, run assignment/transfer/
+return operations, add maintenance, update maintenance status and list operation/
+maintenance history through real endpoints.
+Next: reference data/forms, asset operation backend coverage, reports, complete
+UI, authentication/security hardening, milestone verification, following PLAN.md.
