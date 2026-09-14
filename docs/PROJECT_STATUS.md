@@ -1,6 +1,6 @@
 # Current milestone
 
-Broaden backend coverage for asset operations and maintenance rules.
+Tighten remaining frontend data-entry forms around backend validation rules.
 
 # Completed
 
@@ -12,17 +12,17 @@ Broaden backend coverage for asset operations and maintenance rules.
 - Docker backend image builds with PostgreSQL, SQLite, and bcmath support.
 - Inventory sessions snapshot stock by location/lot, require variance reasons, reject stale or repeated validation, create linked adjustment movements, and the Angular inventory page loads/counts lines through the real API.
 - Equipment page can create assets, run assignment/transfer/return operations, add maintenance, update maintenance status, and view operation/maintenance history through real API endpoints.
+- Asset service tests cover operation history/blocking and maintenance lifecycle rules.
 - Reference-data page creates categories, units, locations, and suppliers with the backend's real fields, including unit symbols and supplier contact details.
 - Reports page previews stock, asset, movement, lot, inventory, and consumption reports through the generic report API and exports filtered PDF/CSV files.
 - PDF/CSV reporting endpoints and document templates exist.
 
 # In progress
 
-- Asset operation and maintenance backend coverage review.
+- Frontend validation alignment review.
 
 # Next
 
-- Broaden backend coverage for asset operations and maintenance rules.
 - Tighten remaining frontend data-entry forms around backend validation rules.
 
 # Known issues
