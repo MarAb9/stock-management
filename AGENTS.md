@@ -1,3 +1,40 @@
+## Context strategy
+
+Do NOT rediscover the entire repository at the beginning of each task.
+
+For every future task, use this order:
+
+1. Read `AGENTS.md`.
+2. Read `docs/PROJECT_STATUS.md`.
+3. Inspect `git status` and recent commits.
+4. Read only the relevant Serena project memory.
+5. Use Serena symbol search/reference tools to locate relevant code.
+6. Open full files only when necessary.
+7. Never rediscover the complete repository unless genuinely required.
+
+Prefer Serena operations such as:
+- symbol overview
+- find symbol
+- find references
+- find implementations
+
+Do not recursively inspect directories or reread unrelated modules simply to
+reconstruct project architecture.
+
+Ignore generated/dependency directories during discovery: `node_modules`,
+`vendor`, `dist`, `build`, `coverage`, Angular caches, and storage logs/cache.
+
+After completing a substantial architectural or business-rule change:
+- update the relevant Serena memory
+- keep it concise
+- update `docs/PROJECT_STATUS.md` only when development progress changes
+
+Keep memories concise.
+Do not copy source code into memories.
+Do not duplicate `AGENTS.md` or `docs/PROJECT_STATUS.md`, or document every file.
+Source code remains the source of truth.
+`docs/PROJECT_STATUS.md` remains the source of truth for current development progress.
+
 # Project Rules
 
 The product source of truth is `X:\master specs.txt`; read targeted sections only when needed. The Git repository is the current implementation truth.

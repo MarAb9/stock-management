@@ -1,0 +1,11 @@
+# Stock domain
+- Consumables: Product -> StockLot (optional) -> StockBalance keyed by product/location/lot. StockMovement is history; balances are the mutable projection. Equipment is separate Asset identity, not a product quantity.
+- StockService.record validates, opens a transaction with three attempts and locks the Product before any lot/balance work. This serializes all operations for one product, including creation of a previously absent balance. Inventory and product edits share this locking convention.
+- Quantities use bcmath at 3 decimal places, positive movement amounts and balance range 0..99999999999.999. Transfers debit/credit distinct locations atomically. Adjustment direction selects the affected side; adjustment/loss/disposal require reasons.
+- Lot must belong to a lot-tracked product. Entry can create a uniquely numbered lot; return/increase adjustment needs an existing lot. Without an explicit lot, decreases allocate FEFO: expiry first, undated last, lot id tie-break. Expired lots are usable only for loss/disposal/adjustment. Multi-lot work rolls back together.
+- Each allocation creates a movement and audit; operation_reference groups allocations. record returns the first movement, not the entire allocation list.
+- InventoryService.create locks products in id order and snapshots balances plus last_movement_id. Counts require nonnegative quantities and a reason for any variance.
+- Validation locks session then relevant products in id order; rejects empty, uncounted, closed or stale sessions. Staleness means a later movement touches a counted product/location/lot. Variances create linked StockService adjustments in one transaction. Add-line/cancel guards also live in InventoryController.
+- AssetService locks the asset for assignment/transfer/return and maintenance. Blocked statuses: retired, maintenance, out_of_service; return requires assigned; transfer changes location. Operations retain snapshots and history.
+- Maintenance scheduled/in_progress makes the asset unavailable; when none remain, status derives from assignment. Closed interventions cannot change; retired assets cannot receive maintenance. AssetController prevents direct reassignment and archives only retired assets.
+- Physical protections and test caveats: `mem:database`, `mem:docker-tests`.
