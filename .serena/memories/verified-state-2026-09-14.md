@@ -10,3 +10,8 @@
 - Tests verified 2026-09-15: `docker compose exec -T backend php artisan test` previously passed 20 tests/187 assertions; `cmd /c npm test -- --watch=false` passed 8 frontend files/38 tests; `cmd /c npm run build` passed. Angular test/build require the elevated path on Windows because sandboxed esbuild hits `spawn EPERM`; both Angular commands show the existing Sass `@import` deprecation warning.
 - Repo/production PARTIAL: no `.github` CI directory; Docker runtime is present for backend/database only; migrations/seeding are explicit; deployment hardening, production env review, frontend hosting/deployment path, E2E tests, and PostgreSQL-specific constraint/concurrency checks remain missing/needs verification.
 - Suggested next dependency order: add missing institution/audit/attachment/document/label UI only where product needs it; add RBAC if more than one staff role is expected; add CI with backend suite/frontend test/build; add PostgreSQL-specific integrity checks; polish responsive/a11y/design system; add focused E2E workflows; production env/deployment review.
+
+## Delta - 2026-09-15
+- Product lifecycle UI completed: server-filtered/paginated list, typed create/edit, detail, balances, tracked lots, immutable configuration guidance, and confirmed archival.
+- Product detail now exposes movement-existence state for reliable unit/lot-tracking locks; archive and stock rules remain backend-authoritative.
+- Verification: product frontend specs 14 passed; Angular suite 9 files/51 tests and build passed; product backend test 1 test/4 assertions, Laravel suite 21 tests/191 assertions, and Pint passed.
