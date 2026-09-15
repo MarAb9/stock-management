@@ -1,6 +1,6 @@
 # Current milestone
 
-Tighten remaining frontend data-entry forms around backend validation rules.
+Frontend/backend form contracts are aligned for the current data-entry flows.
 
 # Completed
 
@@ -18,14 +18,15 @@ Tighten remaining frontend data-entry forms around backend validation rules.
 - PDF/CSV reporting endpoints and document templates exist.
 - Stock movements page now adapts to backend rules for entry, exit, return, transfer, adjustment, loss, and disposal; it supports lot-managed products, FEFO selection, source/destination semantics, validation errors, and grouped FEFO history.
 - Frontend feedback is centralized around safe French API messages, accessible snackbars, delayed global HTTP progress, reusable Laravel field-error mapping, guarded mutation buttons, Material confirmations for irreversible actions, session-expiry return URLs, and loaded-aware empty states.
+- Inventory session/counting forms and reference-data creation forms use typed Reactive Forms aligned with the current Laravel validation rules, including inline 422 errors and normalized payloads.
 
 # In progress
 
-- Review remaining non-stock frontend form alignment.
+- No active form-contract alignment slice.
 
 # Next
 
-- Tighten remaining non-stock frontend data-entry forms around backend validation rules.
+- No remaining known frontend/backend form-contract alignment issue.
 
 # Known issues
 
@@ -37,6 +38,6 @@ Tighten remaining frontend data-entry forms around backend validation rules.
 - Inventory targeted tests: `docker compose exec -T backend php artisan test --filter=InventoryServiceTest`
 - Backend suite: `docker compose exec -T backend php artisan test`
 - Backend style: `cd backend; vendor/bin/pint --dirty --format agent`
-- Frontend tests: `cd frontend; npm test -- --watch=false` (7 files / 24 tests passed on 2026-09-15)
+- Frontend tests: `cd frontend; npm test -- --watch=false` (8 files / 38 tests passed on 2026-09-15)
 - Frontend build: `cd frontend; npm run build` (passed on 2026-09-15)
 - Runtime: `docker compose up --build -d`

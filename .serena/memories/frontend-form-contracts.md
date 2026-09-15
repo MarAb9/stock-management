@@ -1,0 +1,8 @@
+# Frontend form contracts
+- Inventory uses a typed Reactive Form for session creation and one small typed FormGroup per loaded line. Session names and line strings are trimmed before validation/submission; quantities stay as decimal strings and accept 0-3 decimals within the backend range.
+- Line forms enforce nonnegative quantities, 3-decimal precision, reason-on-variance, reason max 255, and comment max 5000. Variance display is preview-only; Laravel remains authoritative for counts, session validation, and adjustment movements.
+- Settings uses one typed superset Reactive Form whose validators switch by category, unit, location, or supplier. Payload construction sends only fields accepted by that type, trims strings, converts empty nullable values to null, and retains the active boolean.
+- Laravel 422 errors route through `applyBackendValidation` to session, line, or reference controls. Only unmapped messages remain as the page fallback; handled form errors clear the shared global error to avoid duplicate feedback. Values reset only after successful writes.
+- Tests cover invalid inventory sessions, decimal/reason rules, inventory 422 mapping and payloads, validation success, all four reference contracts, dynamic validators, duplicate mapping, normalized payloads, and success feedback.
+- Verified 2026-09-15: `npm test -- --watch=false` passed 8 files / 38 tests; `npm run build` passed. The known Sass `@import` warning remains.
+- No known form-contract gap remains in the inventory or reference-data creation flows. Inventory add-line/cancel and reference edit/archive are separate product-scope gaps, not part of this form slice.
