@@ -2,3 +2,7 @@
 @import 'tailwindcss';
 html, body { height: 100%; margin: 0; font-family: Roboto, Arial, sans-serif; background: #f6f7f9; color: #202124; }
 * { box-sizing: border-box; }
+.feedback-success .mdc-snackbar__surface { background: #1f6b3a !important; }
+.feedback-error .mdc-snackbar__surface { background: #8a1f1f !important; }
+.empty-state { padding: 22px 12px !important; text-align: center !important; color: #687278; }
+.empty-state button { margin-left: 8px; }

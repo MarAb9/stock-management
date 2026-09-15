@@ -1,1 +1,6 @@
-<router-outlet />
+@if (showProgress()) {
+  <mat-progress-bar mode="indeterminate" aria-label="Chargement en cours" />
+}
+<div [attr.aria-busy]="api.pending() > 0">
+  <router-outlet />
+</div>

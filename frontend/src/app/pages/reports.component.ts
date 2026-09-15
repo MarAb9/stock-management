@@ -5,25 +5,33 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { finalize } from 'rxjs';
 import { ApiService } from '../core/api.service';
 
 type ReportType = 'stock' | 'assets' | 'movements' | 'lots' | 'inventory' | 'consumption';
-type ReportFilters = {
-  from: string;
-  to: string;
-  stock: string;
-  expiry: string;
-  status: string;
-  condition: string;
-  movement_type: string;
-  variance: string | boolean;
-  year: string;
-};
+type ReportFilters = { from: string; to: string; stock: string; expiry: string; status: string; condition: string; movement_type: string; variance: string | boolean; year: string };
 
 @Component({
   standalone: true,
   imports: [FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule],
-  template: `<section><h1>Rapports</h1><p>États exportables issus des données courantes.</p><mat-card><div class="filters"><mat-form-field><mat-label>Rapport</mat-label><mat-select [(ngModel)]="type" (selectionChange)="changeType()">@for(x of types;track x.value){<mat-option [value]="x.value">{{x.label}}</mat-option>}</mat-select></mat-form-field>@if(hasDates()){<mat-form-field><mat-label>Du</mat-label><input matInput type="date" [(ngModel)]="filters.from"></mat-form-field><mat-form-field><mat-label>Au</mat-label><input matInput type="date" [(ngModel)]="filters.to"></mat-form-field>}@if(type==='stock'){<mat-form-field><mat-label>Stock</mat-label><mat-select [(ngModel)]="filters.stock"><mat-option value="">Tous</mat-option><mat-option value="low">Sous le seuil</mat-option><mat-option value="out">Rupture</mat-option></mat-select></mat-form-field>}@if(type==='lots'){<mat-form-field><mat-label>Péremption</mat-label><mat-select [(ngModel)]="filters.expiry"><mat-option value="">Tous</mat-option><mat-option value="soon">Expire bientôt</mat-option><mat-option value="expired">Expiré</mat-option></mat-select></mat-form-field>}@if(type==='assets'){<mat-form-field><mat-label>Statut</mat-label><mat-select [(ngModel)]="filters.status"><mat-option value="">Tous</mat-option>@for(x of assetStatuses;track x){<mat-option [value]="x">{{labels[x]}}</mat-option>}</mat-select></mat-form-field><mat-form-field><mat-label>État</mat-label><mat-select [(ngModel)]="filters.condition"><mat-option value="">Tous</mat-option>@for(x of conditions;track x){<mat-option [value]="x">{{labels[x]}}</mat-option>}</mat-select></mat-form-field><mat-form-field><mat-label>Année</mat-label><input matInput type="number" [(ngModel)]="filters.year"></mat-form-field>}@if(type==='movements'){<mat-form-field><mat-label>Type</mat-label><mat-select [(ngModel)]="filters.movement_type"><mat-option value="">Tous</mat-option>@for(x of movementTypes;track x){<mat-option [value]="x">{{labels[x]}}</mat-option>}</mat-select></mat-form-field>}@if(type==='inventory'){<mat-form-field><mat-label>Écarts</mat-label><mat-select [(ngModel)]="filters.variance"><mat-option value="">Tous</mat-option><mat-option [value]="true">Avec écart</mat-option></mat-select></mat-form-field>}<button mat-flat-button (click)="load()">Afficher</button></div><div class="actions"><button mat-flat-button (click)="export('pdf')">Télécharger PDF</button><button mat-stroked-button (click)="export('csv')">Exporter pour Excel</button></div><h2>{{title()}}</h2><table><thead><tr>@for(c of columns();track c){<th>{{c}}</th>}</tr></thead><tbody>@for(r of rows();track $index){<tr>@for(c of columns();track $index;let i=$index){<td>{{r[i] ?? '—'}}</td>}</tr>}@empty{<tr><td [attr.colspan]="columns().length || 1">Aucune donnée.</td></tr>}</tbody></table></mat-card></section>`,
+  template: `
+    <section><h1>Rapports</h1><p>États exportables issus des données courantes.</p><mat-card>
+      <div class="filters"><mat-form-field><mat-label>Rapport</mat-label><mat-select [(ngModel)]="type" (selectionChange)="changeType()">@for(item of types;track item.value){<mat-option [value]="item.value">{{item.label}}</mat-option>}</mat-select></mat-form-field>
+        @if(hasDates()){<mat-form-field><mat-label>Du</mat-label><input matInput type="date" [(ngModel)]="filters.from"></mat-form-field><mat-form-field><mat-label>Au</mat-label><input matInput type="date" [(ngModel)]="filters.to"></mat-form-field>}
+        @if(type==='stock'){<mat-form-field><mat-label>Stock</mat-label><mat-select [(ngModel)]="filters.stock"><mat-option value="">Tous</mat-option><mat-option value="low">Sous le seuil</mat-option><mat-option value="out">Rupture</mat-option></mat-select></mat-form-field>}
+        @if(type==='lots'){<mat-form-field><mat-label>Péremption</mat-label><mat-select [(ngModel)]="filters.expiry"><mat-option value="">Tous</mat-option><mat-option value="soon">Expire bientôt</mat-option><mat-option value="expired">Expiré</mat-option></mat-select></mat-form-field>}
+        @if(type==='assets'){<mat-form-field><mat-label>Statut</mat-label><mat-select [(ngModel)]="filters.status"><mat-option value="">Tous</mat-option>@for(item of assetStatuses;track item){<mat-option [value]="item">{{labels[item]}}</mat-option>}</mat-select></mat-form-field><mat-form-field><mat-label>État</mat-label><mat-select [(ngModel)]="filters.condition"><mat-option value="">Tous</mat-option>@for(item of conditions;track item){<mat-option [value]="item">{{labels[item]}}</mat-option>}</mat-select></mat-form-field><mat-form-field><mat-label>Année</mat-label><input matInput type="number" [(ngModel)]="filters.year"></mat-form-field>}
+        @if(type==='movements'){<mat-form-field><mat-label>Type</mat-label><mat-select [(ngModel)]="filters.movement_type"><mat-option value="">Tous</mat-option>@for(item of movementTypes;track item){<mat-option [value]="item">{{labels[item]}}</mat-option>}</mat-select></mat-form-field>}
+        @if(type==='inventory'){<mat-form-field><mat-label>Écarts</mat-label><mat-select [(ngModel)]="filters.variance"><mat-option value="">Tous</mat-option><mat-option [value]="true">Avec écart</mat-option></mat-select></mat-form-field>}
+        <button mat-flat-button [disabled]="loading()" (click)="load()">{{loading()?'Chargement…':'Afficher'}}</button>
+      </div>
+      <div class="actions"><button mat-flat-button [disabled]="exporting() !== null" (click)="export('pdf')">{{exporting()==='pdf'?'Téléchargement…':'Télécharger PDF'}}</button><button mat-stroked-button [disabled]="exporting() !== null" (click)="export('csv')">{{exporting()==='csv'?'Export…':'Exporter pour Excel'}}</button></div>
+      <h2>{{title()}}</h2><table><thead><tr>@for(column of columns();track column){<th>{{column}}</th>}</tr></thead><tbody>
+        @for(row of rows();track $index){<tr>@for(column of columns();track $index;let index=$index){<td>{{row[index]??'—'}}</td>}</tr>}
+        @empty{@if(loaded()){<tr><td [attr.colspan]="columns().length||1" class="empty-state"><span role="status">{{hasAppliedFilters()?'Aucun résultat ne correspond aux filtres sélectionnés.':'Aucune donnée disponible pour ce rapport.'}}</span>@if(hasAppliedFilters()){<button mat-button (click)="clearFilters()">Réinitialiser les filtres</button>}</td></tr>}}
+      </tbody></table>
+    </mat-card></section>
+  `,
   styles: `h1{margin:0;font-size:28px}p{color:#687278}mat-card{padding:20px;margin-top:20px;overflow-x:auto}.filters{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:10px;align-items:center}.filters button,.actions button:first-child{background:#123a4a;color:#fff}.actions{display:flex;gap:10px;margin:6px 0 18px}h2{font-size:18px;margin:0 0 12px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid #e6e8e9;vertical-align:top}@media(max-width:900px){.filters{grid-template-columns:1fr}.actions{flex-wrap:wrap}}`,
 })
 export class ReportsComponent {
@@ -36,49 +44,43 @@ export class ReportsComponent {
   readonly title = signal('État du stock');
   readonly columns = signal<string[]>([]);
   readonly rows = signal<any[][]>([]);
+  readonly loaded = signal(false);
+  readonly loading = signal(false);
+  readonly exporting = signal<'pdf' | 'csv' | null>(null);
+  readonly hasAppliedFilters = signal(false);
+  private loadRequest = 0;
   type: ReportType = 'stock';
   filters: ReportFilters = this.emptyFilters();
 
-  constructor() {
-    this.resetFilters();
-    this.load();
-  }
-
-  hasDates() {
-    return this.type === 'movements' || this.type === 'consumption';
-  }
-
-  changeType() {
-    this.resetFilters();
-    this.load();
-  }
+  constructor() { this.resetFilters(); this.load(); }
+  hasDates() { return this.type === 'movements' || this.type === 'consumption'; }
+  changeType() { this.resetFilters(); this.load(); }
 
   load() {
-    this.api.get<any>('reports/' + this.type, this.params()).subscribe(x => {
-      this.title.set(x.title);
-      this.columns.set(x.columns);
-      this.rows.set(x.rows.data);
+    const request = ++this.loadRequest;
+    const params = this.params();
+    this.loading.set(true);
+    this.loaded.set(false);
+    this.hasAppliedFilters.set(Object.keys(params).length > 0);
+    this.api.get<any>('reports/' + this.type, params).pipe(finalize(() => {
+      if (request === this.loadRequest) { this.loading.set(false); this.loaded.set(true); }
+    })).subscribe(response => {
+      if (request !== this.loadRequest) return;
+      this.title.set(response.title);
+      this.columns.set(response.columns);
+      this.rows.set(response.rows.data);
     });
   }
 
   export(format: 'pdf' | 'csv') {
-    this.api.saveFile(this.path(format), `${this.type}.${format}`);
+    if (this.exporting()) return;
+    this.exporting.set(format);
+    this.api.saveFile(this.path(format), `${this.type}.${format}`).pipe(finalize(() => this.exporting.set(null))).subscribe(() => this.api.success('Export téléchargé.'));
   }
 
-  private resetFilters() {
-    this.filters = this.emptyFilters();
-  }
-
-  private params() {
-    return Object.fromEntries(Object.entries(this.filters).filter(([, v]) => v !== '' && v !== null && v !== undefined)) as Record<string, string | number | boolean>;
-  }
-
-  private path(format: 'pdf' | 'csv') {
-    const query = new URLSearchParams(Object.entries(this.params()).map(([k, v]) => [k, String(v)])).toString();
-    return `reports/${this.type}.${format}${query ? '?' + query : ''}`;
-  }
-
-  private emptyFilters(): ReportFilters {
-    return { from: '', to: '', stock: '', expiry: '', status: '', condition: '', movement_type: '', variance: '', year: '' };
-  }
+  clearFilters() { this.resetFilters(); this.load(); }
+  private resetFilters() { this.filters = this.emptyFilters(); }
+  private params() { return Object.fromEntries(Object.entries(this.filters).filter(([, value]) => value !== '' && value !== null && value !== undefined)) as Record<string, string | number | boolean>; }
+  private path(format: 'pdf' | 'csv') { const query = new URLSearchParams(Object.entries(this.params()).map(([key, value]) => [key, String(value)])).toString(); return `reports/${this.type}.${format}${query ? '?' + query : ''}`; }
+  private emptyFilters(): ReportFilters { return { from: '', to: '', stock: '', expiry: '', status: '', condition: '', movement_type: '', variance: '', year: '' }; }
 }

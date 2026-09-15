@@ -16,14 +16,16 @@ Tighten remaining frontend data-entry forms around backend validation rules.
 - Reference-data page creates categories, units, locations, and suppliers with the backend's real fields, including unit symbols and supplier contact details.
 - Reports page previews stock, asset, movement, lot, inventory, and consumption reports through the generic report API and exports filtered PDF/CSV files.
 - PDF/CSV reporting endpoints and document templates exist.
+- Stock movements page now adapts to backend rules for entry, exit, return, transfer, adjustment, loss, and disposal; it supports lot-managed products, FEFO selection, source/destination semantics, validation errors, and grouped FEFO history.
+- Frontend feedback is centralized around safe French API messages, accessible snackbars, delayed global HTTP progress, reusable Laravel field-error mapping, guarded mutation buttons, Material confirmations for irreversible actions, session-expiry return URLs, and loaded-aware empty states.
 
 # In progress
 
-- Frontend validation alignment review.
+- Review remaining non-stock frontend form alignment.
 
 # Next
 
-- Tighten remaining frontend data-entry forms around backend validation rules.
+- Tighten remaining non-stock frontend data-entry forms around backend validation rules.
 
 # Known issues
 
@@ -35,6 +37,6 @@ Tighten remaining frontend data-entry forms around backend validation rules.
 - Inventory targeted tests: `docker compose exec -T backend php artisan test --filter=InventoryServiceTest`
 - Backend suite: `docker compose exec -T backend php artisan test`
 - Backend style: `cd backend; vendor/bin/pint --dirty --format agent`
-- Frontend tests: `cd frontend; npm test -- --watch=false`
-- Frontend build: `cd frontend; npm run build`
+- Frontend tests: `cd frontend; npm test -- --watch=false` (7 files / 24 tests passed on 2026-09-15)
+- Frontend build: `cd frontend; npm run build` (passed on 2026-09-15)
 - Runtime: `docker compose up --build -d`

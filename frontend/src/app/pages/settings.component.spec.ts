@@ -15,6 +15,8 @@ class ApiStub {
     this.posts.push({ path, body });
     return of({});
   }
+
+  success() {}
 }
 
 describe('SettingsComponent', () => {
